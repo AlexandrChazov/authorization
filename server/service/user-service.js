@@ -58,6 +58,29 @@ class UserService {
     return token
   }
 
+  async refresh(refreshToken) {
+    if (!refreshToken) {
+      throw ApiError.UnAuthorizedError()
+    }
+    const userData = tokenService.validateRefreshToken(refreshToken);
+    const tokenFromDB = tokenService.findToken(refreshToken);
+    if (!userData || !tokenFromDB) {
+      throw ApiError.UnAuthorizedError();
+    }
+    const user = await UserModel.findById(userData.id)
+    const userDto = new UserDto(user);            // т.о. в payload мы поместим данные: { email, id, isActivated }
+                            // dto-шка нужна чтобы выбрать данные из объекта, так как не все данные мы хотим помещать
+                            // в токен, пароль уж точно не следует
+    const tokens = tokenService.generateTokens({ ...userDto })  // передаём в функцию обычный объект а не инстанс
+    await tokenService.saveToken(userDto.id, tokens.refreshToken)
+    return {...tokens, user: userDto}
+  }
+
+  async getAllUsers() {
+    const users = await UserModel.find();
+    return users;
+  }
+
 }
 
 module.exports = new UserService();
