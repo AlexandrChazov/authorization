@@ -11,7 +11,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());  // для того, чтобы при ответе с сервера мы могли присылать cookie
-app.use(cors());
+app.use(cors({
+  credentials: true,               // разрешаем cookie
+  origin: process.env.CLIENT_URL    // url фронтенда
+}));
 app.use("/api", router);
 app.use(errorMiddleware);    // миддлвэйр ошибок всегда ставится последним
 
