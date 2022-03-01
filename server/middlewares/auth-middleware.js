@@ -1,5 +1,6 @@
 const ApiError = require("../exceptions/api-error");
 const tokenService = require("../service/token-service");
+const jwt = require("jsonwebtoken");
 
 module.exports = function(req, res, next) {
   try {
@@ -14,6 +15,10 @@ module.exports = function(req, res, next) {
     const userData = tokenService.validateAccessToken(accessToken);
     if (!userData) {
       return next(ApiError.UnAuthorizedError());
+    }
+    const { isActivated } = jwt.decode(accessToken)
+    if (!isActivated) {
+      return next(ApiError.BadRequest("Confirm your account to get users"));
     }
     req.user = userData;
     next();

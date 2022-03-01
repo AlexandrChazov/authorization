@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import './App.css';
+import styles from './App.module.css';
 import LoginForm from "./components/LoginForm";
 import {Context} from "./index";
 import {observer} from "mobx-react-lite";
@@ -21,8 +21,9 @@ const App: React.FC = () => {
     try {
       const response = await UserService.fetchUsers()
       setUsers(response.data)
-    } catch (e) {
+    } catch (e: any) {
       console.log(e)
+      store.setErrorMessage(e.response?.data?.message)
     }
   }
 
@@ -32,35 +33,58 @@ const App: React.FC = () => {
 
   if (!store.isAuth) {
     return (
-      <div>
+      <div className={styles.app__wrapper}>
+        <div className={styles.error__message}>{store.errorMessage}</div>
         <LoginForm/>
-        <button onClick={getUsers}>Get users</button>
+        <button
+          className={styles.button}
+          onClick={getUsers}
+        >
+          Get users
+        </button>
       </div>
     )
   }
 
   return (
-    <div>
-      <h1>
+    <div className={styles.app__wrapper}>
+      <div className={styles.error__message}>{store.errorMessage}</div>
+      <h1 className={styles.text}>
         {
           store.isAuth
-            ? `User ${store.user.email} authorized `
+            ? `User "${store.user.email}" authorized `
             : 'Authorize please!'
         }
       </h1>
-      <h1>
+      <h1 className={styles.text}>
         {
           store.user.isActivated
             ? 'Account confirmed by email'
-            : 'Confirm account!'
+            : 'Confirm your account please!'
         }
       </h1>
-      <button onClick={() => store.logout()}>Logout</button>
-      <div>
-        <button onClick={getUsers}>Get users</button>
-      </div>
+      <button
+        onClick={() => {
+          store.logout()
+          setUsers([])
+        }}
+        className={styles.button}
+      >
+        Logout
+      </button>
+      <button
+        onClick={getUsers}
+        className={styles.button}
+      >
+        Get users
+      </button>
       {users.map(user =>
-        <div key={user.email}>{user.email}</div>
+        <div
+          key={user.email}
+          className={styles.users__list}
+        >
+          {user.email}
+        </div>
       )}
     </div>
   );

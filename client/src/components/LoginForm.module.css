@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 20em;
+  height: 2.5em;
+  margin: 2em auto 0em auto;
+  border: 1px solid #d17d47;
+  border-radius: 5px;
+}
+
+.button {
+  width: 20em;
+  height: 3em;
+  margin: 1em auto 0em auto;
+  border: none;
+  border-radius: 5px;
+  color: aliceblue;
+  background-color: #d17d47;
+
+}
+
+.button:hover {
+  background-color: #8d552f;
+  cursor: pointer;
+}

@@ -1,0 +1,41 @@
+.app__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  background-color: #d6f3ff;
+}
+
+.button {
+  width: 20em;
+  height: 3em;
+  margin: 1em auto 0em auto;
+  border: none;
+  border-radius: 5px;
+  color: aliceblue;
+  background-color: #d17d47;
+
+}
+
+.button:hover {
+  background-color: #8d552f;
+  cursor: pointer;
+}
+
+.text {
+  margin: 0 auto;
+}
+
+.users__list {
+  margin: 0 auto;
+}
+
+.error__message {
+  position: absolute;
+  color: red;
+  top: 30%;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+}
+

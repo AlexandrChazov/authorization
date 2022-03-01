@@ -11,7 +11,7 @@ class UserService {
   async registration(email, password) {
       const candidate = await UserModel.findOne({ email })
       if (candidate) {
-        throw ApiError.BadRequest(`User with email ${email} already exists`)
+        throw ApiError.BadRequest(`User with email "${email}" already exists`)
       }
       const hashedPassword = await bcrypt.hash(password, 7);
       const activationLink = uuid.v4();                          // генерируется рандомная строка типа "v34fa-asfasf-142saf-sa-asf"
@@ -39,7 +39,7 @@ class UserService {
   async login(email, password) {
     const user = await UserModel.findOne({ email });
     if (!user) {
-      throw ApiError.BadRequest(`User with email ${email} not found`)
+      throw ApiError.BadRequest(`User with email "${email}" not found`)
     }
     const isPassEqual = await bcrypt.compare(password, user.password)
     if (!isPassEqual) {
